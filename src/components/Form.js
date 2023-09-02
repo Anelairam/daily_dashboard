@@ -1,6 +1,25 @@
+import { Button, MenuItem, TextField } from "@mui/material";
 import React, { useState } from "react";
+import SendIcon from "@mui/icons-material/Send";
+import CloseIcon from "@mui/icons-material/Close";
+import Grid from "@mui/material/Unstable_Grid2";
 
-export const Form = ({ addDataHandler }) => {
+const options = [
+  {
+    value: "low",
+    label: "Low",
+  },
+  {
+    value: "medium",
+    label: "Medium",
+  },
+  {
+    value: "high",
+    label: "High",
+  },
+];
+
+export const Form = ({ addDataHandler, handleButtonClick }) => {
   const [taskName, setTaskName] = useState("");
   const [taskPrio, setTaskPrio] = useState("");
   const [taskDesc, setTaskDesc] = useState("");
@@ -12,13 +31,6 @@ export const Form = ({ addDataHandler }) => {
 
   const handleTaskPrio = (e) => {
     setTaskPrio(e.target.value);
-    if (taskPrio === "High"){
-      priorityAlign = 3
-    } else if (taskPrio === "Medium"){
-      priorityAlign = 2
-    } else {
-      priorityAlign = 1
-    }
   };
 
   const handleTaskDesc = (e) => {
@@ -27,14 +39,19 @@ export const Form = ({ addDataHandler }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = 
-      {
-        title: taskName,
-        priority: priorityAlign,
-        description: taskDesc,
-        id: Math.random().toString,
-      }
-
+    if (taskPrio === "high") {
+      priorityAlign = 3;
+    } else if (taskPrio === "medium") {
+      priorityAlign = 2;
+    } else {
+      priorityAlign = 1;
+    }
+    const formData = {
+      title: taskName,
+      priority: priorityAlign,
+      description: taskDesc,
+      id: Math.random().toString,
+    };
     addDataHandler(formData);
     setTaskName("");
     setTaskPrio("Low");
@@ -42,35 +59,66 @@ export const Form = ({ addDataHandler }) => {
   };
   return (
     <form onSubmit={handleSubmit}>
-      <label for="taskName">Enter Task :</label>
-      <input
-        required
-        type="text"
-        id="taskName"
-        name="taskName"
-        value={taskName}
-        onChange={handleTaskName}
-      />
-      <label for="prio">Task's priority :</label>
-      <select
-        id="prio"
-        name="prio"
-        onChange={handleTaskPrio}
-        defaultValue={taskPrio}
+      <Grid
+        sx={{
+          backgroundColor: "lightgreen",
+          maxWidth: "fit-content",
+          margin: "0 auto",
+        }}
+        alignContent={"center"}
       >
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-      </select>
-      <label for="taskDesc">Description :</label>
-      <input
-        type="textarea"
-        id="taskDesc"
-        name="taskDesc"
-        value={taskDesc}
-        onChange={handleTaskDesc}
-      />
-      <button type="Submit">Add Task</button>
+        <div>
+          <TextField
+            required
+            id="standard-basic"
+            label="Task"
+            variant="standard"
+            value={taskName}
+            onChange={handleTaskName}
+          />
+        </div>
+        <div>
+          <TextField
+            id="standard-select-options"
+            select
+            label="Priority"
+            defaultValue="Low"
+            helperText="Please select tasks priority"
+            variant="standard"
+            onChange={handleTaskPrio}
+            value={taskPrio}
+          >
+            {options.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </div>
+        <div>
+          <TextField
+            id="standard-multiline-static"
+            label="Description"
+            multiline
+            rows={3}
+            value={taskDesc}
+            variant="standard"
+            onChange={handleTaskDesc}
+          />
+          <div>
+            <Button
+              variant="elevated"
+              endIcon={<CloseIcon />}
+              onClick={handleButtonClick}
+            >
+              Cancel
+            </Button>
+            <Button type="Submit" variant="elevated" endIcon={<SendIcon />}>
+              Add Task
+            </Button>
+          </div>
+        </div>
+      </Grid>
     </form>
   );
 };

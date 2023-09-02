@@ -1,26 +1,51 @@
-import React, { useState } from "react";
+import { MenuItem, TextField } from "@mui/material";
+import React from "react";
 
-export const DisplayViewSelector = ({setDisplayView}) => {
+const options = [
+  {
+    value: "list",
+    label: "List",
+  },
+  {
+    value: "table",
+    label: "Table",
+  },
+  {
+    value: "highPriority",
+    label: "High Priority",
+  },
+  {
+    value: "mediumPriority",
+    label: "Medium Priority",
+  },
+  {
+    value: "lowPriority",
+    label: "Low Priority",
+  }
+];
 
-    const handleDisplayView = (e) => {
-      setDisplayView(e.target.value)
-    }
+export const DisplayViewSelector = ({ setDisplayView }) => {
+  const handleDisplayView = (e) => {
+    setDisplayView(e.target.value);
+  };
 
   return (
-    <div>
-      <label for="view">Tasks view :</label>
-      <select
-        id="view"
-        name="view"
+    <>
+      <TextField
+        id="standard-select-options"
+        select
+        label="View"
+        helperText="Please select tasks priority"
+        variant="standard"
         onChange={handleDisplayView}
+        value="List"
       >
-        <option value="list">List</option>
-        <option value="table">Table</option>
-
-        <option value="highPriotiry">High Priority</option>
-        <option value="mediumPriotiry">MEdium Priority</option>
-        <option value="lowPriotiry">Low Priority</option>
-      </select>
-    </div>
+        {options.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </TextField>
+    </>
   );
 };

@@ -1,4 +1,4 @@
-import { Paper } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import React from "react";
 
 export const Display = ({ tasks, view }) => {
@@ -7,7 +7,7 @@ export const Display = ({ tasks, view }) => {
   const lowPrio = tasks.filter((task) => task.priority === 1);
 
   return (
-    <div>
+    <>
       {tasks.length !== 0 ? (
         <div>
           {view === "list" ? (
@@ -22,9 +22,8 @@ export const Display = ({ tasks, view }) => {
               })}
             </div>
           ) : view === "table" ? (
-            <div>
-              <p>Table view</p>
-              <div>
+            <Grid container columnSpacing={8} sx={{backgroundColor: 'lightgreen'}}>
+              <Grid item>
                 {highPrio.map((task) => {
                   return (
                     <Paper key={task.id} elevation={1}>
@@ -33,18 +32,18 @@ export const Display = ({ tasks, view }) => {
                     </Paper>
                   );
                 })}
-              </div>
-              <div>
+              </Grid>
+              <Grid item>
                 {mediumPrio.map((task) => {
                   return (
-                    <Paper key={task.id}>
+                    <Paper key={task.id} elevation={1}>
                       <h3>{task.title}</h3>
                       <p>{task.description}</p>
                     </Paper>
                   );
                 })}
-              </div>
-              <div>
+              </Grid>
+              <Grid item>
                 {lowPrio.map((task) => {
                   return (
                     <Paper key={task.id} elevation={1}>
@@ -53,9 +52,9 @@ export const Display = ({ tasks, view }) => {
                     </Paper>
                   );
                 })}
-              </div>
-            </div>
-          ) : view === "highPriotiry" ? (
+              </Grid>
+            </Grid>
+          ) : view === "highPriority" ? (
             <div>
               <p>High view</p>
               {highPrio.map((task) => {
@@ -67,7 +66,7 @@ export const Display = ({ tasks, view }) => {
                 );
               })}
             </div>
-          ) : view === "mediumPriotiry" ? (
+          ) : view === "mediumPriority" ? (
             <div>
               <p>Medium view</p>
               {mediumPrio.map((task) => {
@@ -96,6 +95,6 @@ export const Display = ({ tasks, view }) => {
       ) : (
         <h1>No available tasks for the day</h1>
       )}
-    </div>
+    </>
   );
 };
